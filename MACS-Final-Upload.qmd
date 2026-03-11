@@ -390,7 +390,7 @@ ggplot(data = iran_economic_data, aes(x = Year, y = Misery.Rate)) +
 :::
 :::::::
 
-Data for this page comes from multiple sources. Sources include the Correlates of War's National Material Capabilities (v6.0), CoW's Trade (v.4.0), the World Bank's [World Development Indicators](https://databank.worldbank.org) Dataset, and [Iran Open Data's](https://iranopendata.org/en/dataset/iod-06132-iran-misery-index-by-province-2023/) province-by-province misery index data. Citations for the Correlates of War datasets are included below. Data from the other sources can be found at their websites via the links in their names.
+The shape files used to render the maps on this page were created by GeoBoundaries. Data for this page comes from multiple sources. Sources include the Correlates of War's National Material Capabilities (v6.0), CoW's Trade (v.4.0), the World Bank's [World Development Indicators](https://databank.worldbank.org) Dataset, and [Iran Open Data's](https://iranopendata.org/en/dataset/iod-06132-iran-misery-index-by-province-2023/) province-by-province misery index data. Citations for the Correlates of War datasets and for the GeoBoundaries shape files are included below. Data from the other sources can be found at their websites via the links in their names.
 
 Singer, J. David, Stuart Bremer, and John Stuckey. (1972). “Capability Distribution, Uncertainty, and Major Power War, 1820-1965.” in Bruce Russett (ed) Peace, War, and Numbers, Beverly Hills: Sage, 19-48.
 
@@ -399,3 +399,5 @@ Singer, J. David. 1988. “Reconstructing the Correlates of War Dataset on Mater
 Barbieri, Katherine and Omar M. G. Omar Keshk. 2016. Correlates of War Project Trade Data Set Codebook, Version 4.0. Online: https://correlatesofwar.org.
 
 Barbieri, Katherine, Omar M. G. Keshk, and Brian Pollins. 2009. “TRADING DATA: Evaluating our Assumptions and Coding Rules.” Conflict Management and Peace Science. 26(5): 471-491.
+
+ Runfola, D. et al. (2020) geoBoundaries: A global database of political administrative boundaries. PLoS ONE 15(4): e0231866. https://doi.org/10.1371/journal.pone.0231866
