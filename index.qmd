@@ -1,0 +1,398 @@
+---
+title: "Insights into the War in Iran"
+format: closeread-html
+cr-style:
+      narrative-background-color-overlay: "#f9f5f5"
+      section-background-color: "#f9f5f5"
+      narrative-font-family: "Serif"
+      section-font-family: "Serif"
+---
+
+:::::::::::::::: cr-section
+Over the past week and a half, the world has watched yet another conflict begin to unfold in the Middle East, this time centered around the Islamic Republic of Iran, a [civilization state](https://en.wikipedia.org/wiki/Civilization_state) of over ninety million people, making it one of the largest states in the Middle East. @cr-me-population-map
+
+The war, launched by the United States and the State of Israel, has already killed Iran's Supreme Leader, Ayatollah Ali Khameinei, and is rapidly degrading Iranian military capabilities.
+
+For decades, Iran and Saudi Arabia have been involved in a complex regional cold war. Military expenditures have been high across the region. @cr-me-militaryex-map
+
+Iran, meanwhile, has remained highly isolated from the rest of the world, with Iran disproportionately trading with other Middle Eastern states. @cr-total-me-imports
+
+International economic sanctions imposed on Iran by the global community, particularly the United States, have tried to pressure Iran to negotiate over its nuclear program. @cr-iran-gdp-1
+
+But since a recession contemporaneous with the 1979 revolution that brought Iran's current regime to power, Iran has managed to steadily grow... @cr-iran-gdp-2
+
+...Even in the period before and after the United States withdrew from the J.C.P.O.A. nuclear deal and reimposed sanctions on Iran. @cr-iran-gdp-3
+
+Despite this apparent growth in gross domestic product, the story for the Iranian people has been markedly different.
+
+Even though Iranian GDP continued to grow after the 2017 re-imposition of sanctions by the United States, inflation skyrocketed. @cr-iran-misery-1
+
+And while unemployment has declined since 2017, it still remains above eight percent - a remarkably high rate. @cr-iran-unemployment
+
+And leadership decapitation and capability degradation are not the only goals of this new war. Seeking to capitalize on an Iranian social contract worn thin over decades of authoritarian rule, the United States has declared a monumental objective in Iran: regime change. Following years of protests, including weeks of protesting in January which led to the alleged mass-killing of protesters in the streets, the United States appears to believe that popular opinion in Iran is on its side, and against the Iranian regime's.
+
+Regardless of the Western assumption of widespread public opposition to the Iranian government, there is no guarantee that all Iranians feel the same way about their regime. Moreover, even for Iranians unhappy with their government, there are both political and economic reasons they may oppose it. Critics of U.S. intervention in Iran will point out that the economic conditions in the country were the proximal cause of the January protests, and some will even argue that it is U.S. sanctions turning Iranians against their government, rather than the politics of that government.
+
+Iran's major cities have been particularly significant locations of protest, both during January's anti-regime protests and during the Women, Life, Freedom protests in 2022. Are the provinces containing these cities particularly likely to be economically poor? If so, then perhaps many of the protesters have been motivated particularly strongly by their local economic conditions.
+
+::: {#cr-myplot}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+library(ggplot2)
+library(shadowtext) #found this on Stack Overflow as a solution for making text that pops!
+library(stringi) #Right-to-left text management :( BOO GGPlot!!!
+library(sf)
+library(quarto)
+library(tidyverse)
+library(dplyr)
+library(ggthemes)
+library(viridis)
+library(scales)
+
+iran_admin <- read_sf("shapefiles/ir_shp/ir.shp")
+iran_places <- read_sf("shapefiles/iran-places/iran_places.shp")
+iran_location <- read_sf("shapefiles/iran-location/iran_location.shp")
+iran_misery <- read.csv("datafiles/ir_misery_index_per_prov_2023.csv")
+iran_misery <- iran_misery %>%
+  mutate(name = province)
+ir_misery_map <- left_join(x = iran_admin, y = iran_misery, by = c("name"))
+par(mar = c(0, 0, 0, 0))
+#plot(st_geometry(iran_admin), col = "#f2f2f2", bg = "skyblue", lwd = 0.25, border = 0)
+#plot(st_geometry(ir_misery_map["Misery.Index...2023"]), col = sf.colors(12), bg = "#fff", lwd = 0.25, border = 0)
+#plot(st_geometry(ir_misery_map["Misery.Index...2023"]), col = sf.colors())
+ggplot(data = ir_misery_map) +
+  geom_sf(mapping = aes(fill = Misery.Index...2023)) +
+  theme_void() +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        text=element_text(size=16,
+        family="Hoefler Text"))+
+  labs(
+    title = "Misery Index in the Islamic Republic of Iran",
+    fill = "Misery Index Score"
+  ) +
+  scale_fill_viridis_c(direction = -1)
+```
+:::
+
+One way of examining the economic hardship Iranians face is to consider the misery index. The index, originally invented by economist Arthur Okun, sums the unemployment and inflation rates, providing a general view of the degree of economic suffering to which local population members are subjected to. @cr-myplot
+
+The province which Tehran (تهران), the capital of Iran, is located in has the lowest misery index score in the country. @cr-tehran-misery-inf
+
+Without any other information, we might anticipate a similar trend for other major metropolitan areas in Iran. After all, major cities might exhibit lower unemployment rates, resulting in urban provinces having lower misery index scores.
+
+However, the same trend isn't observed when adding Mushad and Isfahan, Iran's second and third largest cities, with more than 1.5 million people each. (It's worth noting that while the province containing Isfahan does not have any associated misery index data, it does appear to be within a belt of high-misery score provinces.) @cr-major-cities-misery-inf
+
+And the lack of pattern seems to become apparent as we look at the locations of all Iranian cities with at least one million residents. @cr-general-cities-misery-inf
+
+Nationally, the Iranian misery index score has dramatically increased since 2017. If part of the American regime change grand strategy involves enraging the people of Iran economically, maybe that effort is paying off. @cr-iran-misery-index-national
+
+But the real question remains: if Iran, a country of ninety million people, becomes destabilized as a result of this war, what happens to the region as a whole? @cr-me-population-map
+
+And for that most vital of questions, the data isn't going to give us a clear answer. Instead, only time will tell for sure.
+
+::: {#cr-tehran-misery-inf}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+major_cities <- iran_places[iran_places$type == "city" & iran_places$population >= 3000000, ]
+major_cities <- major_cities[!is.na(major_cities$name),] %>%
+  mutate(name = stri_reverse(name))
+major_cities <- major_cities %>%
+  mutate(lon = st_coordinates(.)[,1],
+         lat = st_coordinates(.)[,2])
+
+ggplot(data = ir_misery_map) +
+  geom_sf(mapping = aes(fill = Misery.Index...2023)) +
+  theme_void() +
+  geom_shadowtext(data = major_cities, aes(x = lon, y = lat, label = name)) +
+  labs(
+    title = "Misery Index in the Islamic Republic of Iran",
+    fill = "Misery Index Score"
+  ) +
+  scale_fill_viridis_c(direction = -1) +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        text=element_text(size=16,
+        family="Hoefler Text"))
+```
+:::
+
+::: {#cr-major-cities-misery-inf}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+major_cities <- iran_places[iran_places$type == "city" & iran_places$population >= 1500000, ]
+major_cities <- major_cities[!is.na(major_cities$name),] %>%
+  mutate(name = stri_reverse(name))
+major_cities <- major_cities %>%
+  mutate(lon = st_coordinates(.)[,1],
+         lat = st_coordinates(.)[,2])
+
+ggplot(data = ir_misery_map) +
+  geom_sf(mapping = aes(fill = Misery.Index...2023)) +
+  theme_void() +
+  geom_shadowtext(data = major_cities, aes(x = lon, y = lat, label = name)) +
+  labs(
+    title = "Misery Index in the Islamic Republic of Iran",
+    fill = "Misery Index Score"
+  ) +
+  scale_fill_viridis_c(direction = -1) +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        text=element_text(size=16,
+        family="Hoefler Text"))
+```
+:::
+
+::: {#cr-general-cities-misery-inf}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+major_cities <- iran_places[iran_places$type == "city" & iran_places$population >= 1000000, ]
+major_cities <- major_cities[!is.na(major_cities$name),] %>%
+  mutate(name = stri_reverse(name))
+major_cities <- major_cities %>%
+  mutate(lon = st_coordinates(.)[,1],
+         lat = st_coordinates(.)[,2])
+
+ggplot(data = ir_misery_map) +
+  geom_sf(mapping = aes(fill = Misery.Index...2023)) +
+  theme_void() +
+  geom_shadowtext(data = major_cities, aes(x = lon, y = lat, label = name)) +
+  labs(
+    title = "Misery Index in the Islamic Republic of Iran",
+    fill = "Misery Index Score"
+  ) +
+  scale_fill_viridis_c(direction = -1) +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        text=element_text(size=16,
+        family="Hoefler Text"))
+```
+:::
+
+::: {#cr-me-population-map}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+international_states <- read.csv("datafiles/NMC-60-wsupplementary.csv")
+states_map <- read_sf("shapefiles/states_map/geoBoundariesCGAZ_ADM0.shp")
+states_map <- states_map %>%
+  mutate(statenme = shapeName)
+state_capabilities <- left_join(x = states_map, y = international_states, by = c("statenme"))
+me_capabilities <- state_capabilities[state_capabilities$ccode >= 630 & state_capabilities$ccode <= 700 & state_capabilities$year == 2016,]
+
+#plot(st_geometry(states_map), col = sf.colors(12), bg = "#fff", lwd = 0.25, border = 0)
+ggplot(data = me_capabilities) +
+  geom_sf(mapping = aes(fill = tpop)) +
+  theme_void() +
+  annotate("text", x=54, y=33, label= "Iran") +
+  labs(
+    title = "Population of Middle Eastern Countries",
+    fill = "Thousands of People"
+  ) +
+  scale_fill_viridis_c(direction = 1, labels = scales::unit_format(unit = "T")) +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        text=element_text(size=16,
+        family="Hoefler Text"))
+```
+:::
+
+::: {#cr-me-militaryex-map}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+international_states <- read.csv("datafiles/NMC-60-wsupplementary.csv")
+states_map <- read_sf("shapefiles/states_map/geoBoundariesCGAZ_ADM0.shp")
+states_map <- states_map %>%
+  mutate(statenme = shapeName)
+state_capabilities <- left_join(x = states_map, y = international_states, by = c("statenme"))
+me_capabilities <- state_capabilities[state_capabilities$ccode >= 630 & state_capabilities$ccode <= 700 & state_capabilities$year == 2016,]
+
+#plot(st_geometry(states_map), col = sf.colors(12), bg = "#fff", lwd = 0.25, border = 0)
+ggplot(data = me_capabilities) +
+  geom_sf(mapping = aes(fill = milex)) +
+  theme_void() +
+  labs(
+    title = "Military Expenditure of Middle Eastern Countries",
+    fill = "Thousands $USD"
+  ) +
+  scale_fill_viridis_c(direction = 1, labels = scales::unit_format(unit = "T")) +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        text=element_text(size=16,
+        family="Hoefler Text"))
+```
+:::
+
+::: {#cr-total-me-imports}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+cow_trade <- read.csv("datafiles/Dyadic_COW_4.0.csv")
+cow_trade <- cow_trade[cow_trade$year == 2014, ] %>%
+  mutate(statenme = importer1)
+state_internal_trade <- left_join(x = states_map, y = cow_trade, by = c("statenme"))
+me_internal_trade <- state_internal_trade[state_internal_trade$ccode1 >= 630 & state_internal_trade$ccode1 <= 700 & state_internal_trade$ccode2 >= 630 & state_internal_trade$ccode2 <= 700, ]
+me_internal_trade <- me_internal_trade %>%
+  group_by(importer1) %>%
+  mutate(total_me_trade = sum(flow1, na.rm = TRUE)) %>%
+  ungroup()
+me_internal_trade <- me_internal_trade[me_internal_trade$ccode2 == 700, ]
+
+ggplot(data = me_internal_trade) +
+  geom_sf(mapping = aes(fill = total_me_trade)) +
+  theme_void() +
+  labs(
+    title = "Total Imports from Other Middle Eastern Countries (2014)",
+    fill = "Millions of Dollars"
+  ) +
+  scale_fill_viridis_c(direction = 1, labels = scales::unit_format(unit = "M")) +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        text=element_text(size=16,
+        family="Hoefler Text"))
+```
+:::
+
+::: {#cr-iran-gdp-1}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+me_capabilities_time_analysis <- read.csv("datafiles/World_Bank_Data.csv")
+ggplot(data = me_capabilities_time_analysis, aes(x = Year, y = NY.GDP.MKTP.KD)) +
+  geom_area() +
+  scale_y_continuous(labels = label_number(scale = 1e-9, suffix ="$B")) +
+  labs(
+    title = "Iranian GDP (Constant USD Equivalent)",
+  )+
+  ylab("Iranian GDP") +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        panel.grid.minor = element_line(color = '#A99999', size = 0.2),
+        panel.grid.major = element_line(color = '#A99999', size = 0.2),
+        text=element_text(size=16,
+        family="Hoefler Text"))
+```
+:::
+
+::: {#cr-iran-gdp-2}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+ggplot(data = me_capabilities_time_analysis, aes(x = Year, y = NY.GDP.MKTP.KD)) +
+  geom_area() +
+  scale_y_continuous(labels = label_number(scale = 1e-9, suffix ="$B")) +
+  labs(
+    title = "Iranian GDP (Constant USD Equivalent)",
+  )+
+  ylab("Iranian GDP") +
+  geom_vline(xintercept=1979,
+             color = "red") +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        panel.grid.minor = element_line(color = '#A99999', size = 0.2),
+        panel.grid.major = element_line(color = '#A99999', size = 0.2),
+        text=element_text(size=16,
+        family="Hoefler Text"))
+```
+:::
+
+::: {#cr-iran-gdp-3}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+ggplot(data = me_capabilities_time_analysis, aes(x = Year, y = NY.GDP.MKTP.KD)) +
+  geom_area() +
+  scale_y_continuous(labels = label_number(scale = 1e-9, suffix ="$B")) +
+  labs(
+    title = "Iranian GDP (Constant USD Equivalent)",
+  )+
+  ylab("Iranian GDP") +
+  geom_vline(xintercept=1979,
+             color = "red") +
+  geom_vline(xintercept=2016,
+             color = "red") +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        panel.grid.minor = element_line(color = '#A99999', size = 0.2),
+        panel.grid.major = element_line(color = '#A99999', size = 0.2),
+        text=element_text(size=16,
+        family="Hoefler Text"))
+```
+:::
+
+::: {#cr-iran-misery-1}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+iran_economic_data <- read.csv("datafiles/IRN_Misery_National_Data_Cleaned.csv")
+ggplot(data = iran_economic_data, aes(x = Year, y = Inflation.Consumer.Rate)) +
+  geom_line() +
+  labs(
+    title = "Iranian Consumer Inflation Rate"
+  ) +
+  ylab("Inflation Rate") +
+  scale_y_continuous(labels = label_number(suffix =)) +
+  geom_vline(xintercept=1979,
+            color = "red") +
+  geom_vline(xintercept=2017,
+           color = "red") +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        panel.grid.minor = element_line(color = '#A99999', size = 0.2),
+        panel.grid.major = element_line(color = '#A99999', size = 0.2),
+        text=element_text(size=16,
+        family="Hoefler Text"))
+```
+:::
+
+::: {#cr-iran-unemployment}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+iran_economic_data <- read.csv("datafiles/IRN_Misery_National_Data_Cleaned.csv")
+ggplot(data = iran_economic_data, aes(x = Year, y = Unemployment.ILO)) +
+  geom_line() +
+  labs(
+    title = "Iranian ILO Unemployment Rate"
+  ) +
+  ylab("Unemployment Rate") +
+  scale_y_continuous(labels = label_number(suffix =)) +
+  ylim(0, 15) +
+  geom_vline(xintercept=2017,
+           color = "red") +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        panel.grid.minor = element_line(color = '#A99999', size = 0.2),
+        panel.grid.major = element_line(color = '#A99999', size = 0.2),
+        text=element_text(size=16,
+        family="Hoefler Text"))
+```
+:::
+
+::: {#cr-iran-misery-index-national}
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, dev.args=list(bg="#f9f5f5")}
+iran_economic_data <- read.csv("datafiles/IRN_Misery_National_Data_Cleaned.csv")
+ggplot(data = iran_economic_data, aes(x = Year, y = Misery.Rate)) +
+  geom_line() +
+  labs(
+    title = "Iranian Misery Index Score Over Time"
+  ) +
+  ylab("Misery Index Score") +
+  scale_y_continuous(labels = label_number(suffix =)) +
+  geom_vline(xintercept=2017,
+           color = "red") +
+  theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        plot.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
+        panel.grid.minor = element_line(color = '#A99999', size = 0.2),
+        panel.grid.major = element_line(color = '#A99999', size = 0.2),
+        text=element_text(size=16,
+        family="Hoefler Text"))
+```
+:::
+::::::::::::::::
+
+The shape files used to render the maps on this page were created by GeoBoundaries. Data for this page comes from multiple sources. Sources include the Correlates of War's National Material Capabilities (v6.0), CoW's Trade (v.4.0), the World Bank's [World Development Indicators](https://databank.worldbank.org) Dataset, and [Iran Open Data's](https://iranopendata.org/en/dataset/iod-06132-iran-misery-index-by-province-2023/) province-by-province misery index data. Citations for the Correlates of War datasets and for the GeoBoundaries shape files are included below. Data from the other sources can be found at their websites via the links in their names.
+
+Singer, J. David, Stuart Bremer, and John Stuckey. (1972). “Capability Distribution, Uncertainty, and Major Power War, 1820-1965.” in Bruce Russett (ed) Peace, War, and Numbers, Beverly Hills: Sage, 19-48.
+
+Singer, J. David. 1988. “Reconstructing the Correlates of War Dataset on Material Capabilities of States, 1816-1985” International Interactions, 14: 115-32.
+
+Barbieri, Katherine and Omar M. G. Omar Keshk. 2016. Correlates of War Project Trade Data Set Codebook, Version 4.0. Online: https://correlatesofwar.org.
+
+Barbieri, Katherine, Omar M. G. Keshk, and Brian Pollins. 2009. “TRADING DATA: Evaluating our Assumptions and Coding Rules.” Conflict Management and Peace Science. 26(5): 471-491.
+
+Runfola, D. et al. (2020) geoBoundaries: A global database of political administrative boundaries. PLoS ONE 15(4): e0231866. https://doi.org/10.1371/journal.pone.0231866
