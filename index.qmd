@@ -25,9 +25,9 @@ But since a recession contemporaneous with the 1979 revolution that brought Iran
 
 Despite this apparent growth in gross domestic product, the story for the Iranian people has been markedly different.
 
-Even though Iranian GDP continued to grow after the 2017 re-imposition of sanctions by the United States, inflation skyrocketed. @cr-iran-misery-1
+Even though Iranian GDP continued to grow after the 2018 re-imposition of sanctions by the United States, inflation skyrocketed. @cr-iran-misery-1
 
-And while unemployment has declined since 2017, it still remains above eight percent - a remarkably high rate. @cr-iran-unemployment
+And while unemployment has declined since 2018, it still remains above eight percent - a remarkably high rate. @cr-iran-unemployment
 
 And leadership decapitation and capability degradation are not the only goals of this new war. Seeking to capitalize on an Iranian social contract worn thin over decades of authoritarian rule, the United States has declared a monumental objective in Iran: regime change. Following years of protests, including weeks of protesting in January which led to the alleged mass-killing of protesters in the streets, the United States appears to believe that popular opinion in Iran is on its side, and against the Iranian regime's.
 
@@ -85,7 +85,7 @@ However, the same trend isn't observed when adding Mushad and Isfahan, Iran's se
 
 And the lack of pattern seems to become apparent as we look at the locations of all Iranian cities with at least one million residents. @cr-general-cities-misery-inf
 
-Nationally, the Iranian misery index score has dramatically increased since 2017. If part of the American regime change grand strategy involves enraging the people of Iran economically, maybe that effort is paying off. @cr-iran-misery-index-national
+Nationally, the Iranian misery index score has dramatically increased since 2018. If part of the American regime change grand strategy involves enraging the people of Iran economically, maybe that effort is paying off. @cr-iran-misery-index-national
 
 But the real question remains: if Iran, a country of ninety million people, becomes destabilized as a result of this war, what happens to the region as a whole? @cr-me-population-map
 
@@ -327,7 +327,7 @@ ggplot(data = iran_economic_data, aes(x = Year, y = Inflation.Consumer.Rate)) +
   scale_y_continuous(labels = label_number(suffix =)) +
   geom_vline(xintercept=1979,
             color = "red") +
-  geom_vline(xintercept=2017,
+  geom_vline(xintercept=2018,
            color = "red") +
   theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
         legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
@@ -350,7 +350,7 @@ ggplot(data = iran_economic_data, aes(x = Year, y = Unemployment.ILO)) +
   ylab("Unemployment Rate") +
   scale_y_continuous(labels = label_number(suffix =)) +
   ylim(0, 15) +
-  geom_vline(xintercept=2017,
+  geom_vline(xintercept=2018,
            color = "red") +
   theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
         legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
@@ -372,7 +372,7 @@ ggplot(data = iran_economic_data, aes(x = Year, y = Misery.Rate)) +
   ) +
   ylab("Misery Index Score") +
   scale_y_continuous(labels = label_number(suffix =)) +
-  geom_vline(xintercept=2017,
+  geom_vline(xintercept=2018,
            color = "red") +
   theme(panel.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
         legend.background = element_rect(color = "#f9f5f5", fill = "#f9f5f5"),
